@@ -1,0 +1,26 @@
+import numpy as np
+x=np.array(([[2,9],[1,5],[3,6]]),dtype=float)
+y=np.array(([[92],[86],[89]]),dtype=float)
+x/=np.amax(x,axis=0)
+y/=100
+epoch,lr,ipln,hln,opn=1000000,0.8,2,3,1
+wh=np.random.uniform(size=(ipln,hln))
+bh=np.random.uniform(size=(1,hln))
+wout=np.random.uniform(size=(hln,opn))
+bout=np.random.uniform(size=(1,opn))
+for i in range(epoch):
+    hinp=np.dot(x,wh)+bh
+    hla=1/(1+np.exp(-hinp))
+    outinp=np.dot(hla,wout)+bout
+    output=1/(1+np.exp(-outinp))
+    eo=y-output
+    outgrade=output*(1-output)
+    dop=eo*outgrade
+    eh=dop.dot(wout.T)
+    hgrad=hla*(1-hla)
+    dhl=eh*hgrad
+    wout+=hla.T.dot(dop)*lr
+    wh+=x.T.dot(dhl)*lr
+print('ip:\n'+str(x))
+print('a op:\n'+str(y))
+print('p op:\n',output)
