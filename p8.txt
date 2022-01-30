@@ -1,0 +1,23 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_iris
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score,confusion_matrix
+data=load_iris()
+df=pd.DataFrame(data.data,columns=data.feature_names)
+df['Class']=data.target_names[data.target]
+df.head()
+x=df.iloc[:,:-1].values
+y=df.Class.values
+print(x[:5])
+print(y[:5])
+xt,xtest,yt,ytest=train_test_split(x,y,test_size=0.25,random_state=3)
+knn_classifier=KNeighborsClassifier(n_neighbors=15)
+knn_classifier.fit(xt,yt)
+print(knn_classifier.predict(xtest))
+print('training accuracy score is:',accuracy_score(yt,knn_classifier.predict(xt)))
+print('testing accuracy score is:',accuracy_score(ytest,knn_classifier.predict(xtest)))
+print('training confusion matrix is:\n',confusion_matrix(yt,knn_classifier.predict(xt)))
+print('training accuracy score is:\n',confusion_matrix(ytest,knn_classifier.predict(xtest)))
